@@ -1,0 +1,41 @@
+services:
+  asix:
+    build:
+      context: ./asix
+    ports:
+      - 83:80
+    volumes:
+      - ./asix/src:/var/www/html
+    networks:
+      - examen
+
+  daw:
+    build:
+      context: ./daw
+      dockerfile: dockerfile
+    ports:
+      - 82:80
+    volumes:
+      - ./daw/src:/var/www/html
+    networks:
+      - examen
+
+  web:
+    build:
+      context: ./daw
+      dockerfile: web.dockerfile
+    ports:
+      - 87:80
+      - 446:443
+    volumes:
+      - ./asix/src:/var/www/html
+      - ./daw/config:/etc/apache2/sites-available
+      - ./daw/config:/etc/ssl/certs
+      - ./daw/config:/etc/ssl/private
+    networks:
+      - examen
+
+networks:
+  examen:
+
+
